@@ -1,8 +1,51 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Color Boxes";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 columns */
+            grid-template-rows: repeat(2, 1fr); /* 2 rows */
+            gap: 10px; /* Space between boxes */
+            width: 80%;
+            margin: auto;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .green-box {
+            background-color: green;
+        }
+
+        .red-box {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Color Boxes</h2>
+
+    <div class="container">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <div class="box @(i % 2 == 0 ? "red-box" : "green-box")">
+                Box @i
+            </div>
+        }
+    </div>
+</body>
+</html>
