@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Color Boxes";
+﻿@model List<Red_and_Green_boxes.Controllers.Box>
+
+@{
+    ViewData["Title"] = "Dynamic Color Boxes";
 }
 
 <!DOCTYPE html>
@@ -25,25 +27,18 @@
             font-weight: bold;
             color: white;
             border-radius: 8px;
-        }
-
-        .green-box {
-            background-color: green;
-        }
-
-        .red-box {
-            background-color: red;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h2 style="text-align: center;">Color Boxes</h2>
+    <h2 style="text-align: center;">Dynamic Color Boxes</h2>
 
     <div class="container">
-        @for (int i = 1; i <= 12; i++)
+        @foreach (var box in Model)
         {
-            <div class="box @(i % 2 == 0 ? "red-box" : "green-box")">
-                Box @i
+            <div class="box" style="background-color: @box.Color;">
+                @box.Name
             </div>
         }
     </div>
