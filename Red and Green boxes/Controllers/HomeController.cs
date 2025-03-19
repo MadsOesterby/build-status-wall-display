@@ -1,57 +1,67 @@
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Red_and_Green_boxes.Models;
 
-namespace Red_and_Green_boxes.Controllers;
-
-public class HomeController : Controller
+namespace Red_and_Green_boxes.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly HttpClient _httpClient;
 
-    // Updated Index method with dynamic box data
-    public IActionResult Index()
-    {
-        // Define the box data dynamically
-        var boxes = new List<Box>
+        public HomeController(ILogger<HomeController> logger)
         {
-            new Box { Name = "Box 1", Color = "green" },
-            new Box { Name = "Box 2", Color = "red" },
-            new Box { Name = "Box 3", Color = "blue" },
-            new Box { Name = "Box 4", Color = "orange" },
-            new Box { Name = "Box 5", Color = "purple" },
-            new Box { Name = "Box 6", Color = "cyan" },
-            new Box { Name = "Box 7", Color = "yellow" },
-            new Box { Name = "Box 8", Color = "pink" },
-            new Box { Name = "Box 9", Color = "brown" },
-            new Box { Name = "Box 10", Color = "teal" },
-            new Box { Name = "Box 11", Color = "lime" },
-            new Box { Name = "Box 12", Color = "gray" }
-        };
+            _logger = logger;
+            _httpClient = new HttpClient();
+        }
 
-        return View(boxes);
+        public async Task<IActionResult> Index()
+        {
+            string repoOwner = "Flareium";   // Change this
+            string repoName = "Red and Green boxes";        // Change this
+            string githubToken = "YOUR_GITHUB_TOKEN";   // Store securely (e.g., environment variables)
+            string url = $"https://api.github.com/repos/{repoOwner}/{repoName}/actions/runs";
+
+            List<WorkflowBox> workflows = new();
+
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {githubToken}");
+
+                var response = await _httpClient.GetStringAsync(url);
+                var jsonResponse = JsonDocument.Parse(response);
+
+                foreach (var run in jsonResponse.RootElement.GetProperty("workflow_runs").EnumerateArray())
+                {
+                    string workflowName = run.GetProperty("name").GetString();
+                    string status = run.GetProperty("conclusion").GetString(); // completed status
+
+                    string color = status switch
+                    {
+                        "success" => "green",
+                        "failure" => "red",
+                        "in_progress" => "yellow",
+                        _ => "gray"
+                    };
+
+                    workflows.Add(new WorkflowBox { Name = workflowName, Color = color });
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error fetching workflow data: {ex.Message}");
+            }
+
+            return View(workflows);
+        }
     }
 
-    public IActionResult Privacy()
+    public class WorkflowBox
     {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public string Name { get; set; }
+        public string Color { get; set; }
     }
 }
-
-// Define the Box model inside the controller or move it to Models/Box.cs
-public class Box
-{
-    public string Name { get; set; }
-    public string Color { get; set; }
-}
-
