@@ -3,10 +3,11 @@ name: ASP.NET Core CI/CD
 on:
   push:
     branches:
-      - main  # Runs when changes are pushed to main
+      - master  # Runs when changes are pushed to master
   pull_request:
     branches:
-      - main  # Runs on pull requests to main
+      - master  # Runs on pull requests to master
+  workflow_dispatch:
 
 jobs:
   build:
