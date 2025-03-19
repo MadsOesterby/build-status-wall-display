@@ -21,7 +21,7 @@ namespace Red_and_Green_boxes.Controllers
         {
             string repoOwner = "Flareium";   // Change this
             string repoName = "Red and Green boxes";        // Change this
-            string githubToken = "YOUR_GITHUB_TOKEN";   // Store securely (e.g., environment variables)
+            string githubToken = "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";   // Store securely (e.g., environment variables)
             string url = $"https://api.github.com/repos/{repoOwner}/{repoName}/actions/runs";
 
             List<WorkflowBox> workflows = new();
