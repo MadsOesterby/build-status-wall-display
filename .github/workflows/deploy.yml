@@ -1,0 +1,40 @@
+name: ASP.NET Core CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Runs when changes are pushed to main
+  pull_request:
+    branches:
+      - main  # Runs on pull requests to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3  # Get your latest code
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0'  # Use the version of .NET you're using
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build Application
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Run Tests
+      run: dotnet test --no-restore --verbosity normal
+
+    - name: Publish Application
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: aspnet-app
+        path: ./publish
