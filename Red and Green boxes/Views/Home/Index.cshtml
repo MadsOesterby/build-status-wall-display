@@ -1,34 +1,60 @@
-﻿@model List<Red_and_Green_boxes.Controllers.WorkflowBox>
+﻿@model List<Red_and_Green_boxes.Models.WorkflowStatus>
+@{
+    ViewData["Title"] = "Build Status Wall Display";
+}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>GitHub Workflow Status</title>
-    <style>
-        .box {
-            width: 150px;
-            height: 150px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-</head>
-<body>
-    <h2>GitHub Workflow Status</h2>
-    <div style="display: flex; flex-wrap: wrap;">
-        @foreach (var box in Model)
+<div class="container">
+    <h1 class="my-4">Build Status Wall Display</h1>
+    
+    <div class="row">
+        @foreach (var workflow in Model)
         {
-            <div class="box" style="background-color: @box.Color;">
-                @box.Name
+            var colorClass = workflow.Status switch
+            {
+                Red_and_Green_boxes.Models.BuildStatus.Success => "bg-success",
+                Red_and_Green_boxes.Models.BuildStatus.Failure => "bg-danger",
+                _ => "bg-secondary"
+            };
+            
+            <div class="col-md-4 mb-4">
+                <div class="card @colorClass text-white h-100">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title">@workflow.DisplayName</h5>
+                            <p class="card-text">
+                                Status: @workflow.Status
+                                @if (workflow.IsBuilding)
+                                {
+                                    <span class="ms-2">
+                                        <i class="bi bi-arrow-clockwise spinning" title="Build in progress"></i>
+                                    </span>
+                                }
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <small>Last updated: @workflow.LastUpdated.ToLocalTime().ToString("g")</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No workflow configurations found. Please check your configuration file.
+                </div>
             </div>
         }
     </div>
-</body>
-</html>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-refresh the page every 60 seconds
+        setTimeout(function() {
+            window.location.reload();
+        }, 60000);
+    </script>
+}

@@ -1,83 +1,59 @@
 using System.Diagnostics;
-using System.Net.Http;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Red_and_Green_boxes.Models;
-using System.Linq;
+using Red_and_Green_boxes.Services;
 
 namespace Red_and_Green_boxes.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly IGitHubService _gitHubService;
+        private readonly IMemoryCache _memoryCache;
+        private const string CacheKey = "WorkflowStatuses";
+        private const int CacheExpirationMinutes = 2;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IGitHubService gitHubService,
+            IMemoryCache memoryCache)
         {
             _logger = logger;
-            _httpClient = new HttpClient();
+            _gitHubService = gitHubService;
+            _memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index()
         {
-            string repoOwner = "Flareium";   // Change this
-            string repoName = "Red-and-Green-boxes\r\n";        // Change this
-            string githubToken = Environment.GetEnvironmentVariable("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\r\n"); // Store securely
-            string url = $"https://api.github.com/repos/{repoOwner}/{repoName}/actions/runs";
-
-            List<WorkflowBox> workflows = new();
-
             try
             {
-                _httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
-                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {githubToken}");
-
-                var response = await _httpClient.GetStringAsync(url);
-                var jsonResponse = JsonDocument.Parse(response);
-
-                // Dictionary to store the latest run per workflow
-                Dictionary<string, WorkflowBox> latestWorkflows = new();
-
-                foreach (var run in jsonResponse.RootElement.GetProperty("workflow_runs").EnumerateArray())
+                // Try to get the workflow statuses from cache
+                if (!_memoryCache.TryGetValue(CacheKey, out List<WorkflowStatus> statuses))
                 {
-                    string workflowName = run.GetProperty("name").GetString();
-                    string status = run.GetProperty("conclusion").GetString(); // Workflow conclusion
-                    DateTime createdAt = run.GetProperty("created_at").GetDateTime(); // Run timestamp
-
-                    string color = status switch
-                    {
-                        "success" => "green",
-                        "failure" => "red",
-                        "in_progress" => "yellow",
-                        _ => "gray"
-                    };
-
-                    if (!latestWorkflows.ContainsKey(workflowName) || latestWorkflows[workflowName].CreatedAt < createdAt)
-                    {
-                        latestWorkflows[workflowName] = new WorkflowBox
-                        {
-                            Name = workflowName,
-                            Color = color,
-                            CreatedAt = createdAt
-                        };
-                    }
+                    // If not in cache, fetch from GitHub
+                    statuses = await _gitHubService.GetWorkflowStatusesAsync();
+                    
+                    // Store in cache
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(CacheExpirationMinutes));
+                    
+                    _memoryCache.Set(CacheKey, statuses, cacheOptions);
                 }
 
-                workflows = latestWorkflows.Values.ToList();
+                return View(statuses);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error fetching workflow data: {ex.Message}");
+                _logger.LogError(ex, "Error fetching workflow statuses");
+                return View(new List<WorkflowStatus>());
             }
-
-            return View(workflows);
         }
-    }
 
-    public class WorkflowBox
-    {
-        public string Name { get; set; }
-        public string Color { get; set; }
-        public DateTime CreatedAt { get; set; } // Track latest run timestamp
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
