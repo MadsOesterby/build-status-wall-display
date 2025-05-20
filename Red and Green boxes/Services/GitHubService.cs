@@ -110,7 +110,7 @@ namespace Red_and_Green_boxes.Services
             if (conclusion == null)
                 return BuildStatus.Unknown;
 
-            return conclusion.Value switch
+            return conclusion.Value.Value switch
             {
                 WorkflowRunConclusion.Success => BuildStatus.Success,
                 WorkflowRunConclusion.Failure => BuildStatus.Failure,
