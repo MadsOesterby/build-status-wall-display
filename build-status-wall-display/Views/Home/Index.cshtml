@@ -1,4 +1,4 @@
-﻿@model List<Red_and_Green_boxes.Models.WorkflowStatus>
+﻿@model List<BuildStatusWallDisplay.Models.WorkflowStatus>
 @{
     ViewData["Title"] = "Build Status Wall Display";
 }
@@ -11,8 +11,8 @@
         {
             var colorClass = workflow.Status switch
             {
-                Red_and_Green_boxes.Models.BuildStatus.Success => "bg-success",
-                Red_and_Green_boxes.Models.BuildStatus.Failure => "bg-danger",
+                BuildStatusWallDisplay.Models.BuildStatus.Success => "bg-success",
+                BuildStatusWallDisplay.Models.BuildStatus.Failure => "bg-danger",
                 _ => "bg-secondary"
             };
             

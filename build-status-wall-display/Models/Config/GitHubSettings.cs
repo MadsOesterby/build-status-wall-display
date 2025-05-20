@@ -1,4 +1,4 @@
-namespace Red_and_Green_boxes.Models.Config
+namespace BuildStatusWallDisplay.Models.Config
 {
     /// <summary>
     /// Configuration settings for GitHub API access and workflows to display

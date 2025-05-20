@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Red_and_Green_boxes.Models;
-using Red_and_Green_boxes.Services;
+using BuildStatusWallDisplay.Models;
+using BuildStatusWallDisplay.Services;
 
-namespace Red_and_Green_boxes.Controllers
+namespace BuildStatusWallDisplay.Controllers
 {
     public class HomeController : Controller
     {

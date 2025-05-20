@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Red_and_Green_boxes.Models
+namespace BuildStatusWallDisplay.Models
 {
     /// <summary>
     /// Represents a GitHub workflow configuration from the JSON file

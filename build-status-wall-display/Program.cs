@@ -1,5 +1,5 @@
-using Red_and_Green_boxes.Models.Config;
-using Red_and_Green_boxes.Services;
+using BuildStatusWallDisplay.Models.Config;
+using BuildStatusWallDisplay.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

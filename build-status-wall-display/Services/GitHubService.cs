@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Options;
 using Octokit;
-using Red_and_Green_boxes.Models;
-using Red_and_Green_boxes.Models.Config;
+using BuildStatusWallDisplay.Models;
+using BuildStatusWallDisplay.Models.Config;
 
-namespace Red_and_Green_boxes.Services
+namespace BuildStatusWallDisplay.Services
 {
     /// <summary>
     /// Service to interact with GitHub API

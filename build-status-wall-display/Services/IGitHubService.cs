@@ -1,6 +1,6 @@
-using Red_and_Green_boxes.Models;
+using BuildStatusWallDisplay.Models;
 
-namespace Red_and_Green_boxes.Services
+namespace BuildStatusWallDisplay.Services
 {
     /// <summary>
     /// Interface for GitHub API service
