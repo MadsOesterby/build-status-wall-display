@@ -53,13 +53,10 @@ namespace Red_and_Green_boxes.Services
             {
                 try
                 {
-                    var workflowRuns = await _githubClient.Actions.Workflows.Runs.List(
+                    var workflowRuns = await _githubClient.Actions.Workflows.Runs.ListByWorkflow(
                         workflow.Owner, 
                         workflow.Repo,
-                        new WorkflowRunsRequest
-                        {
-                            WorkflowFileName = workflow.WorkflowId
-                        });
+                        workflowId: long.Parse(workflow.WorkflowId));
 
                     if (workflowRuns.TotalCount > 0)
                     {
