@@ -2,7 +2,10 @@ name: Hello World Workflow
 
  
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    # This enables manual triggering of the workflow
 
  
 
