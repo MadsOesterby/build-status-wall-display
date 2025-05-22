@@ -16,8 +16,8 @@ namespace BuildStatusWallDisplay.Models
         [JsonPropertyName("repo")]
         public string Repo { get; set; } = string.Empty;
         
-        [JsonPropertyName("workflowId")]
-        public string WorkflowId { get; set; } = string.Empty;
+        [JsonPropertyName("workflowFileName")]
+        public string WorkflowFileName { get; set; } = string.Empty;
         
         [JsonPropertyName("displayName")]
         public string DisplayName { get; set; } = string.Empty;

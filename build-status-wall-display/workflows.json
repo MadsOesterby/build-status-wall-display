@@ -1,25 +1,18 @@
 {
   "workflows": [
     {
-      "name": "CI",
-      "owner": "username",
-      "repo": "repository-name",
-      "workflowId": "ci.yml",
-      "displayName": "Continuous Integration"
+      "name": "TestWorkflow",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "TestWorkflow.yml",
+      "displayName": "TestWorkflow"
     },
     {
-      "name": "Deploy",
-      "owner": "username",
-      "repo": "repository-name",
-      "workflowId": "deploy.yml",
-      "displayName": "Deployment"
-    },
-    {
-      "name": "Tests",
-      "owner": "username",
-      "repo": "repository-name",
-      "workflowId": "tests.yml",
-      "displayName": "Unit Tests"
+      "name": "ASP.NET Core CI/CD",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "deploy.yml",
+      "displayName": "ASP.NET Core CI/CD"
     }
   ]
 }

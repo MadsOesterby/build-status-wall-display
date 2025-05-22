@@ -56,7 +56,7 @@ namespace BuildStatusWallDisplay.Services
                     var workflowRuns = await _githubClient.Actions.Workflows.Runs.ListByWorkflow(
                         workflow.Owner, 
                         workflow.Repo,
-                        workflowId: long.Parse(workflow.WorkflowId));
+                        workflow.WorkflowFileName);
 
                     if (workflowRuns.TotalCount > 0)
                     {
