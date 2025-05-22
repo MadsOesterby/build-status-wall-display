@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master  # Runs when changes are pushed to master
+  pull_request:
+    branches:
+      - master  # Runs on pull requests to master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3  # Get your latest code
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'  # Using .NET 9
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build Application
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Create test artifacts
+      run: |
+        mkdir -p ./artifacts
+        cp -r . ./artifacts
+      
+    - name: Upload Build Artifacts for Testing
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-for-test
+        path: ./artifacts
+        retention-days: 1
+        
+    - name: Publish Application
+      run: dotnet publish -c Release -o ./publish
+        
+    - name: Upload Build Artifacts for Deployment
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-for-deploy
+        path: ./publish
+        retention-days: 1

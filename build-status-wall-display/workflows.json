@@ -8,11 +8,25 @@
       "displayName": "TestWorkflow"
     },
     {
-      "name": "ASP.NET Core CI/CD",
+      "name": "Build",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "build.yml",
+      "displayName": "Build"
+    },
+    {
+      "name": "Test",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "test.yml",
+      "displayName": "Test"
+    },
+    {
+      "name": "Deploy",
       "owner": "MadsOesterby",
       "repo": "build-status-wall-display",
       "workflowFileName": "deploy.yml",
-      "displayName": "ASP.NET Core CI/CD"
+      "displayName": "Deploy"
     }
   ]
 }

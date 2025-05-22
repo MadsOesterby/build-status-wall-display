@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'  # Using .NET 9
+    
+    - name: Download Build Artifacts
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        name: build-for-test
+        path: ./
+        
+    - name: Run Tests
+      run: dotnet test --no-build --configuration Release --verbosity normal
