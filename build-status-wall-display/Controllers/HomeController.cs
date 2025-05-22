@@ -12,7 +12,7 @@ namespace BuildStatusWallDisplay.Controllers
         private readonly IGitHubService _gitHubService;
         private readonly IMemoryCache _memoryCache;
         private const string CacheKey = "WorkflowStatuses";
-        private const int CacheExpirationMinutes = 2;
+        private static readonly TimeSpan CacheExpiration = TimeSpan.FromSeconds(30);
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -36,7 +36,7 @@ namespace BuildStatusWallDisplay.Controllers
                     
                     // Store in cache
                     var cacheOptions = new MemoryCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(CacheExpirationMinutes));
+                        .SetAbsoluteExpiration(CacheExpiration);
                     
                     _memoryCache.Set(CacheKey, statuses, cacheOptions);
                 }
