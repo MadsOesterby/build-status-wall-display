@@ -4,7 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Red_and_Green_boxes</RootNamespace>
+    <RootNamespace>BuildStatusWallDisplay</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Octokit" Version="9.0.0" />
+  </ItemGroup>
 
 </Project>

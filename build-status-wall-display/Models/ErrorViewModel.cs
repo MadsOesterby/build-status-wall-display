@@ -1,4 +1,4 @@
-namespace Red_and_Green_boxes.Models
+namespace BuildStatusWallDisplay.Models
 {
     public class ErrorViewModel
     {

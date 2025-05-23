@@ -1,41 +1,35 @@
-name: ASP.NET Core CI/CD
+name: Deploy
 
 on:
-  push:
-    branches:
-      - master  # Runs when changes are pushed to master
-  pull_request:
-    branches:
-      - master  # Runs on pull requests to master
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3  # Get your latest code
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4  # Using official GitHub action instead of dawidd6
       with:
-        dotnet-version: '8.0'  # Use the version of .NET you're using
-
-    - name: Restore Dependencies
-      run: dotnet restore
-
-    - name: Build Application
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Run Tests
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: Publish Application
-      run: dotnet publish -c Release -o ./publish
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: aspnet-app
+        name: build-for-deploy
         path: ./publish
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: List files for verification
+      run: |
+        ls -la ./publish
+        
+    # You can add deployment steps here, such as:
+    # - name: Deploy to Azure Web App
+    #   uses: azure/webapps-deploy@v2
+    #   with:
+    #     app-name: 'your-app-name'
+    #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    #     package: ./publish
+    
+    - name: Upload Deployment Artifacts (For Reference)
+      uses: actions/upload-artifact@v4  # Updated to v4
+      with:
+        name: deployed-app
+        path: ./publish
+        retention-days: 5

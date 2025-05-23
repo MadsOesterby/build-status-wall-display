@@ -1,0 +1,32 @@
+{
+  "workflows": [
+    {
+      "name": "TestWorkflow",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "TestWorkflow.yml",
+      "displayName": "TestWorkflow"
+    },
+    {
+      "name": "Build",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "build.yml",
+      "displayName": "Build"
+    },
+    {
+      "name": "Test",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "test.yml",
+      "displayName": "Test"
+    },
+    {
+      "name": "Deploy",
+      "owner": "MadsOesterby",
+      "repo": "build-status-wall-display",
+      "workflowFileName": "deploy.yml",
+      "displayName": "Deploy"
+    }
+  ]
+}
