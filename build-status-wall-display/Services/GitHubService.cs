@@ -71,6 +71,12 @@ namespace BuildStatusWallDisplay.Services
                             LastUpdated = latestRun.UpdatedAt.DateTime
                         };
                         
+                        // If status is unknown, add error information
+                        if (status.Status == BuildStatus.Unknown && latestRun.Conclusion != null)
+                        {
+                            status.ErrorMessage = $"Workflow concluded with status: {latestRun.Conclusion.Value.StringValue}";
+                        }
+                        
                         statuses.Add(status);
                     }
                     else
@@ -83,7 +89,8 @@ namespace BuildStatusWallDisplay.Services
                             DisplayName = !string.IsNullOrEmpty(workflow.DisplayName) ? workflow.DisplayName : workflow.Name,
                             Status = BuildStatus.Unknown,
                             IsBuilding = false,
-                            LastUpdated = DateTime.UtcNow
+                            LastUpdated = DateTime.UtcNow,
+                            ErrorMessage = "No workflow runs found for this configuration"
                         });
                     }
                 }
@@ -91,13 +98,21 @@ namespace BuildStatusWallDisplay.Services
                 {
                     _logger.LogError(ex, "Error fetching workflow status for {WorkflowName}", workflow.Name);
                     
+                    // Create a status object with error details
+                    var errorMessage = ex.Message;
+                    if (ex is ApiException apiEx)
+                    {
+                        errorMessage = $"GitHub API error: {apiEx.Message} (Status: {apiEx.StatusCode})";
+                    }
+                    
                     statuses.Add(new WorkflowStatus
                     {
                         Name = workflow.Name,
                         DisplayName = !string.IsNullOrEmpty(workflow.DisplayName) ? workflow.DisplayName : workflow.Name,
                         Status = BuildStatus.Unknown,
                         IsBuilding = false,
-                        LastUpdated = DateTime.UtcNow
+                        LastUpdated = DateTime.UtcNow,
+                        ErrorMessage = errorMessage
                     });
                 }
             }
