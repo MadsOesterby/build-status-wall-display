@@ -19,6 +19,45 @@ html {
 
 body {
   margin-bottom: 60px;
+  /* Dark theme implementation - REQ-BSWD-005 */
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Dark theme styles - REQ-BSWD-005 */
+.container {
+  background-color: #121212;
+}
+
+.card-title, .card-text {
+  color: #ffffff;
+}
+
+.alert-info {
+  background-color: #1e3a5a;
+  color: #9bbade;
+  border-color: #175080;
+}
+
+.navbar {
+  background-color: #1a1a1a !important; 
+}
+
+.footer {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
+.text-muted {
+  color: #adb5bd !important;
+}
+
+a {
+  color: #63a8eb;
+}
+
+a:hover {
+  color: #88bcf1;
 }
 
 /* Spinning animation for the build in progress icon */
@@ -37,26 +76,26 @@ body {
 .card {
     transition: transform 0.3s;
     min-height: 150px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border: none;
 }
 
 .card:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* Custom styles for the status cards - implementing REQ-BSWD-002 */
 .bg-success {
-    background-color: #28a745 !important; /* Green for successful builds */
+    background-color: #2a9446 !important; /* Slightly darker green for better contrast in dark mode */
 }
 
 .bg-danger {
-    background-color: #dc3545 !important; /* Red for failed builds */
+    background-color: #d03140 !important; /* Slightly adjusted red for better contrast in dark mode */
 }
 
 .bg-secondary {
-    background-color: #6c757d !important; /* Grey for unknown status */
+    background-color: #5a6268 !important; /* Slightly darker grey for better contrast in dark mode */
 }
 
 /* Error icon styling - implementing REQ-BSWD-003 */
