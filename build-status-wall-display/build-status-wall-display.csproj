@@ -5,9 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BuildStatusWallDisplay</RootNamespace>
+    <UserSecretsId>BuildStatusWallDisplay-3E9C0CC4-612E-4D75-B78E-29A86E30A8A3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0-preview.3.24173.2" />
     <PackageReference Include="Octokit" Version="9.0.0" />
   </ItemGroup>
 
