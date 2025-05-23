@@ -20,6 +20,11 @@ namespace BuildStatusWallDisplay.Models
         /// Indicates if there's an error explanation available
         /// </summary>
         public bool HasError => Status == BuildStatus.Unknown && !string.IsNullOrEmpty(ErrorMessage);
+
+        /// <summary>
+        /// URL to the build details page on GitHub
+        /// </summary>
+        public string BuildDetailsUrl { get; set; } = string.Empty;
     }
 
     public enum BuildStatus

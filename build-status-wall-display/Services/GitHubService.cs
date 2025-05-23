@@ -68,7 +68,8 @@ namespace BuildStatusWallDisplay.Services
                             DisplayName = !string.IsNullOrEmpty(workflow.DisplayName) ? workflow.DisplayName : workflow.Name,
                             Status = GetBuildStatus(latestRun.Conclusion),
                             IsBuilding = latestRun.Status.Value == WorkflowRunStatus.InProgress,
-                            LastUpdated = latestRun.UpdatedAt.DateTime
+                            LastUpdated = latestRun.UpdatedAt.DateTime,
+                            BuildDetailsUrl = latestRun.HtmlUrl
                         };
                         
                         // If status is unknown, add error information
@@ -90,7 +91,8 @@ namespace BuildStatusWallDisplay.Services
                             Status = BuildStatus.Unknown,
                             IsBuilding = false,
                             LastUpdated = DateTime.UtcNow,
-                            ErrorMessage = "No workflow runs found for this configuration"
+                            ErrorMessage = "No workflow runs found for this configuration",
+                            BuildDetailsUrl = $"https://github.com/{workflow.Owner}/{workflow.Repo}/actions/workflows/{workflow.WorkflowFileName}"
                         });
                     }
                 }
@@ -112,7 +114,8 @@ namespace BuildStatusWallDisplay.Services
                         Status = BuildStatus.Unknown,
                         IsBuilding = false,
                         LastUpdated = DateTime.UtcNow,
-                        ErrorMessage = errorMessage
+                        ErrorMessage = errorMessage,
+                        BuildDetailsUrl = $"https://github.com/{workflow.Owner}/{workflow.Repo}/actions/workflows/{workflow.WorkflowFileName}"
                     });
                 }
             }
