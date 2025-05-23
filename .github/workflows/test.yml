@@ -13,17 +13,22 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     steps:
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4  # Updated to v4
       with:
         dotnet-version: '9.0.x'  # Using .NET 9
     
     - name: Download Build Artifacts
-      uses: dawidd6/action-download-artifact@v2
+      uses: actions/download-artifact@v4  # Using official GitHub action instead of dawidd6
       with:
-        workflow: build.yml
         name: build-for-test
         path: ./
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        run-id: ${{ github.event.workflow_run.id }}
+        
+    - name: List files
+      run: |
+        ls -la
         
     - name: Run Tests
       run: dotnet test --no-build --configuration Release --verbosity normal

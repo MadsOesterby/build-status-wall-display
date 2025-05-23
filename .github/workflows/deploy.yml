@@ -9,11 +9,15 @@ jobs:
 
     steps:
     - name: Download Build Artifacts
-      uses: dawidd6/action-download-artifact@v2
+      uses: actions/download-artifact@v4  # Using official GitHub action instead of dawidd6
       with:
-        workflow: build.yml
         name: build-for-deploy
         path: ./publish
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: List files for verification
+      run: |
+        ls -la ./publish
         
     # You can add deployment steps here, such as:
     # - name: Deploy to Azure Web App
@@ -24,7 +28,7 @@ jobs:
     #     package: ./publish
     
     - name: Upload Deployment Artifacts (For Reference)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: deployed-app
         path: ./publish

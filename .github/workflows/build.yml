@@ -15,10 +15,10 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3  # Get your latest code
+      uses: actions/checkout@v4  # Updated to v4
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4  # Updated to v4
       with:
         dotnet-version: '9.0.x'  # Using .NET 9
 
@@ -30,21 +30,21 @@ jobs:
       
     - name: Create test artifacts
       run: |
-        mkdir -p ./artifacts
-        cp -r . ./artifacts
+        mkdir -p ./test-artifacts
+        cp -r ./* ./test-artifacts/
       
     - name: Upload Build Artifacts for Testing
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: build-for-test
-        path: ./artifacts
+        path: ./test-artifacts
         retention-days: 1
         
     - name: Publish Application
       run: dotnet publish -c Release -o ./publish
         
     - name: Upload Build Artifacts for Deployment
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: build-for-deploy
         path: ./publish
