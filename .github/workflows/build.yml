@@ -31,7 +31,7 @@ jobs:
     - name: Create test artifacts
       run: |
         mkdir -p ./test-artifacts
-        cp -r ./* ./test-artifacts/
+        rsync -av --exclude='./test-artifacts' ./ ./test-artifacts/
       
     - name: Upload Build Artifacts for Testing
       uses: actions/upload-artifact@v4  # Updated to v4
