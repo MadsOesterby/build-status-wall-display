@@ -25,6 +25,7 @@ body {
 .spinning {
     animation: spin 2s linear infinite;
     display: inline-block;
+    font-size: 1.2rem;
 }
 
 @keyframes spin {
@@ -36,23 +37,48 @@ body {
 .card {
     transition: transform 0.3s;
     min-height: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
 }
 
 .card:hover {
     transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Custom styles for the status cards */
+/* Custom styles for the status cards - implementing REQ-BSWD-002 */
 .bg-success {
-    background-color: #28a745 !important;
+    background-color: #28a745 !important; /* Green for successful builds */
 }
 
 .bg-danger {
-    background-color: #dc3545 !important;
+    background-color: #dc3545 !important; /* Red for failed builds */
 }
 
 .bg-secondary {
-    background-color: #6c757d !important;
+    background-color: #6c757d !important; /* Grey for unknown status */
+}
+
+/* Error icon styling - implementing REQ-BSWD-003 */
+.error-icon {
+    font-size: 1.2rem;
+    cursor: help;
+    transition: color 0.2s;
+}
+
+.error-icon:hover {
+    color: #ffc107; /* Yellow highlighting on hover */
+}
+
+/* Ensure tooltip text is readable with appropriate styling */
+.tooltip-inner {
+    max-width: 300px;
+    padding: 8px 12px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

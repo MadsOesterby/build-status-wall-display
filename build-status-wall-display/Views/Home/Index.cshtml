@@ -9,11 +9,12 @@
     <div class="row">
         @foreach (var workflow in Model)
         {
+            // Set the background color based on the build status
             var colorClass = workflow.Status switch
             {
                 BuildStatusWallDisplay.Models.BuildStatus.Success => "bg-success",
                 BuildStatusWallDisplay.Models.BuildStatus.Failure => "bg-danger",
-                _ => "bg-secondary"
+                _ => "bg-secondary"  // Unknown status shows as grey
             };
             
             <div class="col-md-4 mb-4">
@@ -27,6 +28,12 @@
                                 {
                                     <span class="ms-2">
                                         <i class="bi bi-arrow-clockwise spinning" title="Build in progress"></i>
+                                    </span>
+                                }
+                                @if (workflow.HasError)
+                                {
+                                    <span class="ms-2">
+                                        <i class="bi bi-info-circle error-icon" title="@workflow.ErrorMessage" data-bs-toggle="tooltip" data-bs-placement="top"></i>
                                     </span>
                                 }
                             </p>
@@ -56,5 +63,13 @@
         setTimeout(function() {
             window.location.reload();
         }, 30000);
+        
+        // Initialize Bootstrap tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
     </script>
 }
